@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "agent-text-shimmer",
+  "title": "Agent Text Shimmer",
+  "description": "Animated text shimmer/skeleton for streaming-token placeholders.",
+  "dependencies": [
+    "motion",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "registryDependencies": [
+    "https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Components@main/public/r/agent-chat.json"
+  ],
+  "files": [
+    {
+      "path": "registry/default/agent-ui/components/text-shimmer.tsx",
+      "content": "import React from \"react\";\nimport { cn } from \"../utils/cn\";\n\nexport type TextShimmerProps = {\n  children: React.ReactNode;\n  as?: React.ElementType;\n  className?: string;\n  duration?: number;\n  spread?: number;\n  delay?: number;\n};\n\nfunction TextShimmerComponent({\n  children,\n  as: Component = \"p\",\n  className,\n  duration = 2,\n  spread = 100,\n  delay = 0,\n}: TextShimmerProps) {\n  const style = {\n    \"--an-shimmer-duration\": `${duration}s`,\n    \"--an-shimmer-spread\": `${spread}px`,\n    animationDelay: delay > 0 ? `${delay}s` : undefined,\n    animationDuration: `${duration}s`,\n    animationIterationCount: \"infinite\",\n    animationTimingFunction: \"linear\",\n  } as React.CSSProperties;\n\n  return (\n    <Component\n      className={cn(\"an-text-shimmer\", \"an-text-shimmer--active\", className)}\n      style={style}\n    >\n      {children}\n    </Component>\n  );\n}\n\nexport const TextShimmer = React.memo(TextShimmerComponent);\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

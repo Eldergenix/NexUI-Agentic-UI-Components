@@ -1,0 +1,19 @@
+{
+  "title": "NexUI — Agentic UI Components for AI SDK v6",
+  "tagline": "The shadcn/ui registry for AI agent applications. Chat, tools, streaming, artifacts, layouts.",
+  "colors": {
+    "background": "#FAFAFA",
+    "foreground": "#171717",
+    "accent": "#E5E5E5"
+  },
+  "logo": null,
+  "faviconSrc": null,
+  "faviconLetter": "nx",
+  "faviconTransparent": true,
+  "faviconLetterSize": 50,
+  "faviconDarkBg": "#000000",
+  "faviconDarkAccent": "#b3b3b3",
+  "outputDir": "public/metadata",
+  "font": "Inter",
+  "url": "github.com/Eldergenix/NexUI-Agentic-UI-Components"
+}

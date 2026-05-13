@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "aisdkagents": {
+      "source": "aisdkagents.com",
+      "sourceType": "well-known",
+      "computedHash": "2c8d7e2241e07e030e8085ee80b47b4d6b0c4207e19cb1209db1cd6da6f2bc0e"
+    }
+  }
+}

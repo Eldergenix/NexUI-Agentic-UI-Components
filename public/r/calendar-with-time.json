@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "calendar-with-time",
+  "title": "Calendar (With Time)",
+  "description": "Calendar paired with a time input. Adapted from coss.com p-calendar-18.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Components@main/public/r/calendar.json"
+  ],
+  "files": [
+    {
+      "path": "registry/default/calendar-with-time.tsx",
+      "content": "\"use client\";\n\n/**\n * CalendarWithTime — adapted from coss p-calendar-18.\n *\n * Adaptation notes:\n * - Same Field/InputGroup substitution as CalendarWithDateInput: replaced with\n *   a plain `<label>` + token-styled `<input type=\"time\">` and a positioned\n *   `<ClockIcon>` from lucide-react.\n * - The time is stored separately from the date as an `HH:MM:SS` string (the\n *   coss source did the same — date and time are kept decoupled and `step=\"1\"`\n *   exposes seconds in the native time picker).\n */\n\nimport * as React from \"react\";\nimport { ClockIcon } from \"lucide-react\";\nimport { Calendar } from \"@/registry/default/calendar\";\n\nexport interface CalendarWithTimeProps {\n  /** Initial selected date. Defaults to today. */\n  defaultDate?: Date;\n  /** Initial time string in `HH:MM:SS`. Defaults to `12:00:00`. */\n  defaultTime?: string;\n  /** Optional callback whenever the date or time changes. */\n  onChange?: (next: { date: Date | undefined; time: string }) => void;\n}\n\nexport function CalendarWithTime({\n  defaultDate,\n  defaultTime = \"12:00:00\",\n  onChange,\n}: CalendarWithTimeProps) {\n  const initial = defaultDate ?? new Date();\n  const [date, setDate] = React.useState<Date | undefined>(initial);\n  const [month, setMonth] = React.useState<Date>(initial);\n  const [timeValue, setTimeValue] = React.useState<string>(defaultTime);\n\n  const handleDayPickerSelect = (selectedDate: Date | undefined) => {\n    setDate(selectedDate);\n    if (selectedDate) {\n      setMonth(selectedDate);\n    }\n    onChange?.({ date: selectedDate, time: timeValue });\n  };\n\n  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {\n    const next = e.target.value;\n    setTimeValue(next);\n    onChange?.({ date, time: next });\n  };\n\n  return (\n    <div className=\"flex flex-col gap-3\">\n      <Calendar\n        mode=\"single\"\n        month={month}\n        onMonthChange={setMonth}\n        onSelect={handleDayPickerSelect}\n        selected={date}\n      />\n      <label className=\"flex flex-row items-center gap-3 text-sm\">\n        <span className=\"whitespace-nowrap text-xs text-[var(--muted-foreground)]\">\n          Enter time\n        </span>\n        <div className=\"relative grow\">\n          <input\n            aria-label=\"Select time\"\n            type=\"time\"\n            step={1}\n            value={timeValue}\n            onChange={handleTimeChange}\n            className=\"w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-3 py-2 pr-9 text-sm text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none\"\n          />\n          <ClockIcon\n            aria-hidden=\"true\"\n            className=\"absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)] pointer-events-none\"\n          />\n        </div>\n      </label>\n    </div>\n  );\n}\n\nCalendarWithTime.displayName = \"CalendarWithTime\";\n\nexport default CalendarWithTime;\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

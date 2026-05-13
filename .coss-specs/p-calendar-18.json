@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-calendar-18",
+  "description": "Calendar with time input",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@coss/calendar",
+    "@coss/field",
+    "@coss/input-group"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-calendar-18.tsx",
+      "content": "\"use client\";\n\nimport { ClockIcon } from \"lucide-react\";\nimport { useState } from \"react\";\nimport { Calendar } from \"@/registry/default/ui/calendar\";\nimport { Field, FieldLabel } from \"@/registry/default/ui/field\";\nimport {\n  InputGroup,\n  InputGroupAddon,\n  InputGroupInput,\n} from \"@/registry/default/ui/input-group\";\n\nexport default function Particle() {\n  const [date, setDate] = useState<Date | undefined>(() => new Date());\n  const [month, setMonth] = useState<Date>(() => new Date());\n  const [timeValue, setTimeValue] = useState(\"12:00:00\");\n\n  const handleDayPickerSelect = (selectedDate: Date | undefined) => {\n    setDate(selectedDate);\n    if (selectedDate) {\n      setMonth(selectedDate);\n    }\n  };\n\n  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {\n    setTimeValue(e.target.value);\n  };\n\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Calendar\n        mode=\"single\"\n        month={month}\n        onMonthChange={setMonth}\n        onSelect={handleDayPickerSelect}\n        selected={date}\n      />\n      <Field className=\"flex-row items-center gap-3\">\n        <FieldLabel className=\"whitespace-nowrap text-xs\">\n          Enter time\n        </FieldLabel>\n        <InputGroup className=\"grow\">\n          <InputGroupInput\n            aria-label=\"Select time\"\n            className=\"*:[input]:[&::-webkit-calendar-picker-indicator]:hidden *:[input]:[&::-webkit-calendar-picker-indicator]:appearance-none\"\n            onChange={handleTimeChange}\n            step=\"1\"\n            type=\"time\"\n            value={timeValue}\n          />\n          <InputGroupAddon>\n            <ClockIcon aria-hidden=\"true\" />\n          </InputGroupAddon>\n        </InputGroup>\n      </Field>\n    </div>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "categories": [
+    "calendar",
+    "input",
+    "field"
+  ],
+  "type": "registry:block"
+}

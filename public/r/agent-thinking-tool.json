@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "agent-thinking-tool",
+  "title": "Agent Thinking Tool",
+  "description": "Collapsible reasoning panel for chain-of-thought tokens.",
+  "dependencies": [
+    "@base-ui/react",
+    "@tabler/icons-react",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "registryDependencies": [
+    "https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Components@main/public/r/agent-chat.json"
+  ],
+  "files": [
+    {
+      "path": "registry/default/agent-ui/components/tools/thinking-tool.tsx",
+      "content": "import { memo } from \"react\";\nimport type { TimelineStep, StepState } from \"../../types/timeline\";\nimport { useToolComplete } from \"../../hooks/use-tool-complete\";\nimport { ToolRowBase } from \"./tool-row-base\";\nimport {\n  mapToolInvocationToStep,\n  mapToolStateToStepState,\n} from \"../../utils/tool-adapters\";\n\nexport type ThinkingCollapsedProps = {\n  step: Extract<TimelineStep, { type: \"tool-call\" }>;\n  state: StepState;\n  onComplete: () => void;\n  defaultOpen?: boolean;\n  expanded?: boolean;\n  onToggleExpand?: () => void;\n};\n\nexport function ThinkingCollapsed({\n  step,\n  state,\n  onComplete,\n  defaultOpen,\n  expanded,\n  onToggleExpand,\n}: ThinkingCollapsedProps) {\n  useToolComplete(state === \"animating\", step.duration, onComplete);\n\n  return (\n    <ToolRowBase\n      shimmerLabel=\"Thinking\"\n      completeLabel=\"Thought\"\n      isAnimating={state === \"animating\"}\n      expandable={!!step.thoughtContent}\n      defaultOpen={defaultOpen}\n      expanded={expanded}\n      onToggleExpand={onToggleExpand}\n    >\n      <div className=\"max-h-[175px] overflow-y-auto\">\n        <p className=\"text-sm text-muted-foreground whitespace-pre-wrap\">\n          {step.thoughtContent}\n        </p>\n      </div>\n    </ToolRowBase>\n  );\n}\n\nexport type ThinkingToolProps = {\n  part?: any;\n  step?: Extract<TimelineStep, { type: \"tool-call\" }>;\n  state?: StepState;\n  onComplete?: () => void;\n  defaultOpen?: boolean;\n  expanded?: boolean;\n  onToggleExpand?: () => void;\n};\n\nexport const ThinkingTool = memo(function ThinkingTool({\n  part,\n  step: externalStep,\n  state: externalState,\n  onComplete: externalOnComplete,\n  defaultOpen,\n  expanded,\n  onToggleExpand,\n}: ThinkingToolProps) {\n  let step: Extract<TimelineStep, { type: \"tool-call\" }>;\n  let stepState: StepState;\n  let onComplete: () => void;\n\n  if (externalStep && externalState && externalOnComplete) {\n    step = externalStep;\n    stepState = externalState;\n    onComplete = externalOnComplete;\n  } else if (part) {\n    step = mapToolInvocationToStep(part.toolCallId ?? part.id ?? \"thinking\", {\n      toolName: \"Thinking\",\n      args: part.input ?? part.args ?? {},\n      state:\n        part.state === \"output-available\"\n          ? \"result\"\n          : part.state === \"input-streaming\"\n            ? \"partial-call\"\n            : \"call\",\n      result: part.output ?? part.result,\n    });\n    stepState = mapToolStateToStepState(\n      part.state === \"output-available\"\n        ? \"result\"\n        : part.state === \"input-streaming\"\n          ? \"partial-call\"\n          : \"call\",\n    );\n    onComplete = () => {};\n  } else {\n    return null;\n  }\n\n  return (\n    <ThinkingCollapsed\n      step={step}\n      state={stepState}\n      onComplete={onComplete}\n      defaultOpen={defaultOpen}\n      expanded={expanded}\n      onToggleExpand={onToggleExpand}\n    />\n  );\n});\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

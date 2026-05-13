@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "agent-generic-tool",
+  "title": "Agent Generic Tool",
+  "description": "Fallback renderer for unknown tool types.",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "registryDependencies": [
+    "https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Components@main/public/r/agent-chat.json"
+  ],
+  "files": [
+    {
+      "path": "registry/default/agent-ui/components/tools/generic-tool.tsx",
+      "content": "import React, { memo } from \"react\";\nimport type { TimelineStep, StepState } from \"../../types/timeline\";\nimport { useToolComplete } from \"../../hooks/use-tool-complete\";\nimport { ToolRowBase } from \"./tool-row-base\";\n\nexport type GenericToolRowProps = {\n  step: Extract<TimelineStep, { type: \"tool-call\" }>;\n  state: StepState;\n  onComplete: () => void;\n};\n\nexport function GenericToolRow({\n  step,\n  state,\n  onComplete,\n}: GenericToolRowProps) {\n  useToolComplete(state === \"animating\", step.duration, onComplete);\n  const isPending = state === \"animating\";\n\n  return (\n    <ToolRowBase\n      shimmerLabel={step.toolName}\n      completeLabel={step.toolName}\n      isAnimating={isPending}\n      detail={step.toolDetail}\n    />\n  );\n}\n\nexport type GenericToolProps = {\n  icon?: React.ComponentType<{ className?: string }>;\n  title: string;\n  subtitle?: string;\n  isPending: boolean;\n  isError?: boolean;\n};\n\nexport const GenericTool = memo(function GenericTool({\n  icon,\n  title,\n  subtitle,\n  isPending,\n}: GenericToolProps) {\n  const Icon = icon;\n\n  return (\n    <ToolRowBase\n      icon={\n        Icon ? (\n          <Icon className=\"w-full h-full shrink-0 text-muted-foreground\" />\n        ) : undefined\n      }\n      shimmerLabel={title}\n      completeLabel={title}\n      isAnimating={isPending}\n      detail={subtitle}\n    />\n  );\n});\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

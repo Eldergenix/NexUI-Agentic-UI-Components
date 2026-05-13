@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "popover",
+  "title": "Popover",
+  "description": "Radix-based popover themed with nexUI surface and shadow tokens. Includes a PopoverPopup alias for coss-compatible usage.",
+  "dependencies": [
+    "@radix-ui/react-popover"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/default/popover.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport * as PopoverPrimitive from \"@radix-ui/react-popover\";\nimport { cn } from \"@/registry/default/lib/utils\";\n\n/**\n * Popover — Radix-based, themed for nexUI.\n *\n * Surfaces use the elevation ladder (`--surface-3` content over body's\n * `--surface-1`) plus `shadow-surface-4` for floating elevation. Dark mode\n * automatically inherits via the `.dark` selector in globals.css.\n *\n * Exported aliases (Popover, PopoverTrigger, PopoverContent) follow shadcn\n * conventions. We also export PopoverPopup as an alias to PopoverContent so\n * coss-style consumers that imported `PopoverPopup` from another registry can\n * drop in without churn.\n */\n\nconst Popover = PopoverPrimitive.Root;\nconst PopoverTrigger = PopoverPrimitive.Trigger;\nconst PopoverAnchor = PopoverPrimitive.Anchor;\nconst PopoverPortal = PopoverPrimitive.Portal;\n\nconst PopoverContent = React.forwardRef<\n  React.ComponentRef<typeof PopoverPrimitive.Content>,\n  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>\n>(({ className, align = \"center\", sideOffset = 6, ...props }, ref) => (\n  <PopoverPrimitive.Portal>\n    <PopoverPrimitive.Content\n      ref={ref}\n      align={align}\n      sideOffset={sideOffset}\n      className={cn(\n        \"z-50 w-72 rounded-2xl p-2\",\n        \"bg-[var(--surface-3)] text-[var(--foreground)]\",\n        \"shadow-[var(--shadow-4)]\",\n        \"outline-none\",\n        \"data-[state=open]:animate-in data-[state=closed]:animate-out\",\n        \"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0\",\n        \"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95\",\n        className\n      )}\n      {...props}\n    />\n  </PopoverPrimitive.Portal>\n));\nPopoverContent.displayName = \"PopoverContent\";\n\n// Alias for coss-derived usage (`PopoverPopup` was the coss name).\nconst PopoverPopup = PopoverContent;\n\nexport {\n  Popover,\n  PopoverTrigger,\n  PopoverContent,\n  PopoverPopup,\n  PopoverAnchor,\n  PopoverPortal,\n};\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

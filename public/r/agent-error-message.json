@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "agent-error-message",
+  "title": "Agent Error Message",
+  "description": "Error state component for failed tool calls or model responses.",
+  "dependencies": [
+    "@tabler/icons-react",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "registryDependencies": [
+    "https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Components@main/public/r/agent-chat.json"
+  ],
+  "files": [
+    {
+      "path": "registry/default/agent-ui/components/error-message.tsx",
+      "content": "import { memo } from \"react\";\nimport { cn } from \"../utils/cn\";\n\nexport type ErrorMessageProps = {\n  title?: string;\n  message: string;\n  className?: string;\n};\n\nexport const ErrorMessage = memo(function ErrorMessage({\n  title = \"Something went wrong\",\n  message,\n  className,\n}: ErrorMessageProps) {\n  return (\n    <div className={cn(\"flex justify-start\", className)}>\n      <div className=\"border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm text-an-foreground rounded-[8px]\">\n        <div className=\"font-medium text-an-foreground\">{title}</div>\n        <div className=\"mt-0.5 text-an-foreground-muted\">{message}</div>\n      </div>\n    </div>\n  );\n});\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

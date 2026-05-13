@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar-group",
+  "title": "Avatar Group",
+  "description": "Overlapping avatar stack with ring separator and +N overflow pill. Adapted from coss.com p-avatar-13.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils",
+    "https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Components@main/public/r/avatar.json"
+  ],
+  "files": [
+    {
+      "path": "registry/default/avatar-group.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport {\n  Avatar,\n  AvatarFallback,\n  AvatarImage,\n} from \"@/registry/default/avatar\";\nimport { cn } from \"@/registry/default/lib/utils\";\n\n/**\n * AvatarGroup — small stack of overlapping avatars with a `ring` separator.\n *\n * Adapted from coss.com `p-avatar-13` but accepts the avatar list as a prop\n * instead of hardcoding three Unsplash URLs. Ring color uses\n * `var(--background)` so the separation reads correctly in both themes.\n *\n * If `users.length > max`, the overflow is collapsed into a \"+N\" pill that\n * uses the same ring treatment.\n */\n\nexport interface AvatarGroupUser {\n  id: string;\n  name: string;\n  imageUrl?: string;\n  initials?: string;\n}\n\nexport interface AvatarGroupProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"children\"> {\n  users: AvatarGroupUser[];\n  /** Avatar pixel size. Defaults to 24 (size-6). */\n  size?: number;\n  /** Max avatars to render before collapsing the rest into \"+N\". */\n  max?: number;\n  /** Ring thickness in pixels. Defaults to 2. */\n  ringWidth?: number;\n}\n\nfunction defaultInitials(name: string): string {\n  const parts = name.trim().split(/\\s+/).filter(Boolean);\n  if (parts.length === 0) return \"\";\n  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();\n  return ((parts[0]?.[0] ?? \"\") + (parts[parts.length - 1]?.[0] ?? \"\")).toUpperCase();\n}\n\nexport function AvatarGroup({\n  users,\n  size = 24,\n  max = 4,\n  ringWidth = 2,\n  className,\n  ...rest\n}: AvatarGroupProps) {\n  const visible = users.slice(0, max);\n  const overflow = users.length - visible.length;\n\n  return (\n    <div className={cn(\"flex\", className)} style={{ marginRight: -ringWidth }} {...rest}>\n      {visible.map((u) => (\n        <Avatar\n          key={u.id}\n          className=\"-mr-[6px] rounded-full\"\n          style={{\n            width: size,\n            height: size,\n            boxShadow: `0 0 0 ${ringWidth}px var(--background)`,\n          }}\n        >\n          {u.imageUrl ? <AvatarImage alt={u.name} src={u.imageUrl} /> : null}\n          <AvatarFallback className=\"text-[0.55em]\">\n            {u.initials ?? defaultInitials(u.name)}\n          </AvatarFallback>\n        </Avatar>\n      ))}\n      {overflow > 0 ? (\n        <span\n          aria-label={`${overflow} more`}\n          className={cn(\n            \"-mr-[6px] inline-flex items-center justify-center rounded-full\",\n            \"bg-[var(--muted)] text-[var(--muted-foreground)] text-[0.6em] font-medium tabular-nums\"\n          )}\n          style={{\n            width: size,\n            height: size,\n            boxShadow: `0 0 0 ${ringWidth}px var(--background)`,\n          }}\n        >\n          +{overflow}\n        </span>\n      ) : null}\n    </div>\n  );\n}\nAvatarGroup.displayName = \"AvatarGroup\";\n\nexport default AvatarGroup;\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

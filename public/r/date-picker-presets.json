@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "date-picker-presets",
+  "title": "Date Picker (With Presets)",
+  "description": "Popover date picker with Today / Tomorrow / In 3 days / In a week quick presets next to the calendar. Adapted from coss.com p-date-picker-4.",
+  "dependencies": [
+    "date-fns",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Components@main/public/r/button.json",
+    "https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Components@main/public/r/calendar.json",
+    "https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Components@main/public/r/popover.json"
+  ],
+  "files": [
+    {
+      "path": "registry/default/date-picker-presets.tsx",
+      "content": "\"use client\";\n\n/**\n * DatePickerPresets — adapted from coss p-date-picker-4.\n *\n * Adaptation notes:\n * - Source used `variant=\"outline\"` on the trigger and `variant=\"ghost\"` on the\n *   preset buttons. FF's Button has no \"outline\" variant, so the trigger maps\n *   to `variant=\"secondary\"` (tonal surface that reads as \"outlined\" on both\n *   themes). Ghost stays ghost.\n * - Source used Base UI / coss popover with `<PopoverTrigger render={<Button/>}>`.\n *   Our popover is Radix-based: `PopoverTrigger` accepts `asChild` and merges\n *   into the FF Button child via Slot.\n * - Uses `PopoverContent` (canonical name) — `PopoverPopup` is just an alias.\n * - Preset list uses `var(--border)` for the dividing rule between presets and\n *   calendar so it works in both themes without hardcoded grays.\n */\n\nimport * as React from \"react\";\nimport { addDays, format } from \"date-fns\";\nimport { CalendarIcon } from \"lucide-react\";\nimport { Button } from \"@/registry/default/button\";\nimport { Calendar } from \"@/registry/default/calendar\";\nimport {\n  Popover,\n  PopoverContent,\n  PopoverTrigger,\n} from \"@/registry/default/popover\";\nimport { cn } from \"@/registry/default/lib/utils\";\n\nexport interface DatePickerPresetsProps {\n  /** Initial selected date. Defaults to today. */\n  defaultDate?: Date;\n  /** Optional callback whenever the selected date changes. */\n  onDateChange?: (date: Date | undefined) => void;\n  /** Optional className applied to the trigger Button. */\n  className?: string;\n}\n\ninterface Preset {\n  label: string;\n  getDate: (today: Date) => Date;\n}\n\nconst PRESETS: Preset[] = [\n  { label: \"Today\", getDate: (t) => t },\n  { label: \"Tomorrow\", getDate: (t) => addDays(t, 1) },\n  { label: \"In 3 days\", getDate: (t) => addDays(t, 3) },\n  { label: \"In a week\", getDate: (t) => addDays(t, 7) },\n];\n\nexport function DatePickerPresets({\n  defaultDate,\n  onDateChange,\n  className,\n}: DatePickerPresetsProps) {\n  const today = React.useMemo(() => new Date(), []);\n  const initial = defaultDate ?? today;\n  const [month, setMonth] = React.useState<Date>(initial);\n  const [date, setDate] = React.useState<Date | undefined>(initial);\n\n  const updateDate = (next: Date | undefined) => {\n    setDate(next);\n    onDateChange?.(next);\n  };\n\n  return (\n    <Popover>\n      <PopoverTrigger asChild>\n        <Button\n          variant=\"secondary\"\n          className={cn(\"w-full justify-start gap-2\", className)}\n        >\n          <CalendarIcon aria-hidden=\"true\" className=\"h-4 w-4\" />\n          <span>{date ? format(date, \"PPP\") : \"Pick a date\"}</span>\n        </Button>\n      </PopoverTrigger>\n      <PopoverContent\n        align=\"start\"\n        className=\"w-auto p-0 overflow-hidden\"\n      >\n        <div className=\"flex max-sm:flex-col\">\n          <div className=\"flex flex-col gap-1 py-2 ps-2 pe-3 max-sm:order-1 max-sm:border-t max-sm:border-[var(--border)] sm:border-e sm:border-[var(--border)]\">\n            {PRESETS.map((preset) => (\n              <Button\n                key={preset.label}\n                variant=\"ghost\"\n                size=\"sm\"\n                className=\"w-full justify-start\"\n                onClick={() => {\n                  const next = preset.getDate(today);\n                  updateDate(next);\n                  setMonth(next);\n                }}\n              >\n                {preset.label}\n              </Button>\n            ))}\n          </div>\n          <Calendar\n            className=\"max-sm:pb-3 sm:ps-2\"\n            mode=\"single\"\n            month={month}\n            onMonthChange={setMonth}\n            onSelect={updateDate}\n            selected={date}\n          />\n        </div>\n      </PopoverContent>\n    </Popover>\n  );\n}\n\nDatePickerPresets.displayName = \"DatePickerPresets\";\n\nexport default DatePickerPresets;\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

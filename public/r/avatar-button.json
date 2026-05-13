@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar-button",
+  "title": "Avatar Button",
+  "description": "Pill button with leading avatar. Adapted from coss.com p-button-28.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils",
+    "https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Components@main/public/r/avatar.json",
+    "https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Components@main/public/r/button.json"
+  ],
+  "files": [
+    {
+      "path": "registry/default/avatar-button.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport {\n  Avatar,\n  AvatarFallback,\n  AvatarImage,\n} from \"@/registry/default/avatar\";\nimport { Button } from \"@/registry/default/button\";\nimport { cn } from \"@/registry/default/lib/utils\";\n\n/**\n * AvatarButton — a button with a leading circular avatar.\n *\n * Adapted from coss.com `p-button-28`. The coss source hardcoded a Luke\n * Tracy avatar with a `@georgelucas` label; here we accept the avatar info\n * and children freely. The visual treatment matches: pill-shaped button with\n * a tight `ps-1` so the avatar nests cleanly against the rounded edge.\n *\n * Uses FF Button (variant=\"secondary\" maps to coss \"outline\" style).\n */\n\nexport interface AvatarButtonProps\n  extends Omit<React.ComponentPropsWithoutRef<typeof Button>, \"leadingIcon\" | \"trailingIcon\"> {\n  /** Image URL for the avatar. */\n  avatarUrl?: string;\n  /** Alt text + fallback source. Required for a11y. */\n  avatarName: string;\n  /** Explicit initials. Defaults to first/last initials of `avatarName`. */\n  avatarInitials?: string;\n  /** Avatar size in pixels. Defaults to 24 (size-6). */\n  avatarSize?: number;\n}\n\nfunction defaultInitials(name: string): string {\n  const parts = name.trim().split(/\\s+/).filter(Boolean);\n  if (parts.length === 0) return \"\";\n  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();\n  return ((parts[0]?.[0] ?? \"\") + (parts[parts.length - 1]?.[0] ?? \"\")).toUpperCase();\n}\n\nexport const AvatarButton = React.forwardRef<\n  HTMLButtonElement,\n  AvatarButtonProps\n>(function AvatarButton(\n  {\n    avatarUrl,\n    avatarName,\n    avatarInitials,\n    avatarSize = 24,\n    variant = \"secondary\",\n    size = \"sm\",\n    className,\n    children,\n    ...rest\n  },\n  ref\n) {\n  return (\n    <Button\n      ref={ref}\n      variant={variant}\n      size={size}\n      className={cn(\"rounded-full ps-1 gap-2\", className)}\n      {...rest}\n    >\n      <Avatar style={{ width: avatarSize, height: avatarSize }}>\n        {avatarUrl ? <AvatarImage alt={avatarName} src={avatarUrl} /> : null}\n        <AvatarFallback className=\"text-[0.6em]\">\n          {avatarInitials ?? defaultInitials(avatarName)}\n        </AvatarFallback>\n      </Avatar>\n      {children}\n    </Button>\n  );\n});\n\nexport default AvatarButton;\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

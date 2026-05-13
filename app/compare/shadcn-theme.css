@@ -1,0 +1,109 @@
+/* Canonical shadcn/ui "default" style with "neutral" base color.
+   Scoped to .shadcn-theme — used ONLY on /compare to render the original
+   shadcn components in their canonical look, isolated from Fluid Functionalism
+   tokens. Do not import this file from anywhere else. */
+
+.shadcn-theme {
+  /* Surfaces */
+  --background: #FFFFFF;
+  --foreground: #0A0A0A;
+  --card: #FFFFFF;
+  --card-foreground: #0A0A0A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0A0A0A;
+
+  /* Primary / Secondary (shadcn-only — undefined elsewhere) */
+  --primary: #171717;
+  --primary-foreground: #FAFAFA;
+  --secondary: #F5F5F5;
+  --secondary-foreground: #171717;
+
+  /* Muted / Accent */
+  --muted: #F5F5F5;
+  --muted-foreground: #737373;
+  --accent: #F5F5F5;
+  --accent-foreground: #171717;
+
+  /* Borders / Inputs / Ring */
+  --border: #E5E5E5;
+  --input: #E5E5E5;
+  --ring: #0A0A0A;
+
+  /* Destructive */
+  --destructive: #EF4444;
+  --destructive-foreground: #FAFAFA;
+
+  /* Inherit foreground but no background — let the BentoCard surface show through */
+  color: var(--foreground);
+}
+
+/* Tailwind v4's `border` utility falls back to currentColor when no
+   border-color is set. shadcn components use plain `border` without
+   `border-border`, so within .shadcn-theme we redirect every border to
+   the canonical shadcn border token. */
+.shadcn-theme,
+.shadcn-theme *,
+.shadcn-theme ::before,
+.shadcn-theme ::after {
+  border-color: var(--border);
+}
+
+/* Radix portals (DropdownMenu, Select, Dialog) escape .shadcn-theme.
+   Use a data-attribute on the wrapper plus a CSS variable inheritance trick:
+   we attach the same class via portal content className overrides. See
+   shadcn-previews.tsx where Content components inherit `.shadcn-theme`. */
+
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .shadcn-theme {
+    --background: #0A0A0A;
+    --foreground: #FAFAFA;
+    --card: #0A0A0A;
+    --card-foreground: #FAFAFA;
+    --popover: #0A0A0A;
+    --popover-foreground: #FAFAFA;
+
+    --primary: #FAFAFA;
+    --primary-foreground: #171717;
+    --secondary: #262626;
+    --secondary-foreground: #FAFAFA;
+
+    --muted: #262626;
+    --muted-foreground: #A3A3A3;
+    --accent: #262626;
+    --accent-foreground: #FAFAFA;
+
+    --border: #262626;
+    --input: #262626;
+    --ring: #D4D4D4;
+
+    --destructive: #7F1D1D;
+    --destructive-foreground: #FAFAFA;
+  }
+}
+
+.dark .shadcn-theme {
+  --background: #0A0A0A;
+  --foreground: #FAFAFA;
+  --card: #0A0A0A;
+  --card-foreground: #FAFAFA;
+  --popover: #0A0A0A;
+  --popover-foreground: #FAFAFA;
+
+  --primary: #FAFAFA;
+  --primary-foreground: #171717;
+  --secondary: #262626;
+  --secondary-foreground: #FAFAFA;
+
+  --muted: #262626;
+  --muted-foreground: #A3A3A3;
+  --accent: #262626;
+  --accent-foreground: #FAFAFA;
+
+  --border: #262626;
+  --input: #262626;
+  --ring: #D4D4D4;
+
+  --destructive: #7F1D1D;
+  --destructive-foreground: #FAFAFA;
+}

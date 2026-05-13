@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "p-calendar-17",
+  "description": "Calendar with date input",
+  "dependencies": [
+    "date-fns",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@coss/calendar",
+    "@coss/field",
+    "@coss/input-group"
+  ],
+  "files": [
+    {
+      "path": "registry/default/particles/p-calendar-17.tsx",
+      "content": "\"use client\";\n\nimport { format, isValid, parse } from \"date-fns\";\nimport { CalendarIcon } from \"lucide-react\";\nimport { useState } from \"react\";\nimport { Calendar } from \"@/registry/default/ui/calendar\";\nimport { Field, FieldLabel } from \"@/registry/default/ui/field\";\nimport {\n  InputGroup,\n  InputGroupAddon,\n  InputGroupInput,\n} from \"@/registry/default/ui/input-group\";\n\nexport default function Particle() {\n  const [date, setDate] = useState<Date | undefined>(() => new Date());\n  const [month, setMonth] = useState<Date>(() => new Date());\n  const [inputValue, setInputValue] = useState(() =>\n    format(new Date(), \"yyyy-MM-dd\"),\n  );\n\n  const handleDayPickerSelect = (selectedDate: Date | undefined) => {\n    if (!selectedDate) {\n      setInputValue(\"\");\n      setDate(undefined);\n    } else {\n      setDate(selectedDate);\n      setMonth(selectedDate);\n      setInputValue(format(selectedDate, \"yyyy-MM-dd\"));\n    }\n  };\n\n  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {\n    const value = e.target.value;\n    setInputValue(value);\n\n    if (value) {\n      const parsedDate = parse(value, \"yyyy-MM-dd\", new Date());\n      if (isValid(parsedDate)) {\n        setDate(parsedDate);\n        setMonth(parsedDate);\n      }\n    } else {\n      setDate(undefined);\n    }\n  };\n\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Calendar\n        mode=\"single\"\n        month={month}\n        onMonthChange={setMonth}\n        onSelect={handleDayPickerSelect}\n        selected={date}\n      />\n      <Field className=\"flex-row items-center gap-4\">\n        <FieldLabel className=\"whitespace-nowrap\">Enter date</FieldLabel>\n        <InputGroup>\n          <InputGroupInput\n            aria-label=\"Select date\"\n            className=\"*:[input]:[&::-webkit-calendar-picker-indicator]:hidden *:[input]:[&::-webkit-calendar-picker-indicator]:appearance-none\"\n            onChange={handleInputChange}\n            type=\"date\"\n            value={inputValue}\n          />\n          <InputGroupAddon>\n            <CalendarIcon aria-hidden=\"true\" />\n          </InputGroupAddon>\n        </InputGroup>\n      </Field>\n    </div>\n  );\n}\n",
+      "type": "registry:block"
+    }
+  ],
+  "categories": [
+    "calendar",
+    "input",
+    "field"
+  ],
+  "type": "registry:block"
+}
