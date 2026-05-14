@@ -1,0 +1,15 @@
+# NexUI is published to GitHub Packages.
+#
+# To install @eldergenix/* packages, copy this file to .npmrc in your project,
+# create a Personal Access Token at https://github.com/settings/tokens with the
+# `read:packages` scope, then export it:
+#
+#   export GITHUB_TOKEN=ghp_xxxxxxxxxxxxx
+#
+# Now `npm install @eldergenix/nexui-agentic-ui-components` will Just Work.
+#
+# CI alternative: set NODE_AUTH_TOKEN to ${{ secrets.GITHUB_TOKEN }} —
+# Actions provides this automatically (no PAT required).
+
+@eldergenix:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}

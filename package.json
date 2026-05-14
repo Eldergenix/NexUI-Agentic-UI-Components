@@ -1,8 +1,32 @@
 {
-  "name": "nexui-agentic-ui-components",
+  "name": "@eldergenix/nexui-agentic-ui-components",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "description": "NexUI — The agentic shadcn/ui registry for AI SDK v6: chat composers, tool renderers, streaming UI, thinking indicators, glass avatars, and full agent shell layouts. Built for Vercel AI SDK v6, Next.js 15, React 19, and Tailwind v4.",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "files": [
+    "registry/default",
+    "components",
+    "lib/docs",
+    "lib/icon-context.tsx",
+    "lib/icon-map.tsx",
+    "lib/utils.ts",
+    "public/r",
+    "metadata.config.json",
+    "registry.json",
+    "scripts/postbuild-registry.mjs",
+    "animation-guidelines.md",
+    "component-documentation-guidelines.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "**/*.css",
+    "registry/default/agent-ui/agent-ui.css"
+  ],
   "keywords": [
     "shadcn",
     "shadcn-ui",

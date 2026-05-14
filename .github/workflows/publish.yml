@@ -1,0 +1,73 @@
+name: Publish to GitHub Packages
+
+on:
+  # Auto-publish when a GitHub Release is published
+  release:
+    types: [published]
+  # Or trigger manually from the Actions tab
+  workflow_dispatch:
+
+# Required for npm publishing to GitHub Packages with the
+# default GITHUB_TOKEN (no PAT required)
+permissions:
+  contents: read
+  packages: write
+  id-token: write # provenance attestations
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          # Pre-wires ~/.npmrc with @eldergenix → npm.pkg.github.com
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@eldergenix"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Build registry JSON manifests
+        run: pnpm registry:build
+
+      - name: Publish to GitHub Packages
+        run: npm publish --provenance
+        env:
+          # GITHUB_TOKEN is auto-provided by Actions — no manual PAT needed
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Write job summary
+        env:
+          PKG_NAME: "@eldergenix/nexui-agentic-ui-components"
+          REGISTRY: "https://npm.pkg.github.com"
+        run: |
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          {
+            echo "### Published 🚀"
+            echo ""
+            echo "**Package** \`$PKG_NAME\`"
+            echo ""
+            echo "**Registry** $REGISTRY"
+            echo ""
+            echo "**Version** $PKG_VERSION"
+            echo ""
+            echo "**Install**"
+            echo '```bash'
+            echo "npm install $PKG_NAME --registry=$REGISTRY"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

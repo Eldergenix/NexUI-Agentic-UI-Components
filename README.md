@@ -67,6 +67,35 @@ npx shadcn@latest add https://cdn.jsdelivr.net/gh/Eldergenix/NexUI-Agentic-UI-Co
 
 Want your own domain? Override the CDN by deploying this repo (or just the `public/r` folder) anywhere and setting `NEXUI_REGISTRY_URL=https://your-domain.com/r` before `pnpm registry:build`.
 
+### Or install via GitHub Packages (npm)
+
+NexUI is also published to the **GitHub Packages** npm registry under the [`@eldergenix`](https://github.com/orgs/Eldergenix/packages) scope — useful when you want lockfile-tracked versioning, Renovate / Dependabot updates, or a CI-friendly auth flow:
+
+```bash
+# 1. Wire the @eldergenix scope to GitHub Packages once per project
+cp .npmrc.example .npmrc   # (or copy contents from this repo)
+
+# 2. Set a PAT with `read:packages` scope (one-time, in your shell rc)
+export GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
+
+# 3. Install
+npm install @eldergenix/nexui-agentic-ui-components
+# or
+pnpm add @eldergenix/nexui-agentic-ui-components
+```
+
+Then import any component:
+
+```tsx
+import { LinearShell } from "@eldergenix/nexui-agentic-ui-components/registry/default/linear-shell";
+import { LinearAgentShell } from "@eldergenix/nexui-agentic-ui-components/registry/default/linear-agent-shell";
+import { ThinkingIndicator } from "@eldergenix/nexui-agentic-ui-components/registry/default/thinking-indicator";
+```
+
+**Browse all releases** → [github.com/Eldergenix/NexUI-Agentic-UI-Components/pkgs/npm](https://github.com/Eldergenix/NexUI-Agentic-UI-Components/pkgs/npm)
+
+> 💡 **The shadcn CLI install path is still the primary, recommended route** — it copies source files into your project so you can edit them freely. The npm install path is best for projects that want a tracked dependency rather than vendored sources.
+
 <br />
 
 ## Featured layouts
