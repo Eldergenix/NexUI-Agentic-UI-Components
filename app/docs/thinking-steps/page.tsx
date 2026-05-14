@@ -16,6 +16,7 @@ import { ComponentPreview } from "@/lib/docs/ComponentPreview";
 import { PropsTable, type PropDef } from "@/lib/docs/PropsTable";
 import { DocPage, DocSection } from "@/lib/docs/DocPage";
 import { useIcon } from "@/registry/default/lib/icon-context";
+import { withBasePath } from "@/lib/base-path";
 
 // ─── Code Snippets ──────────────────────────────────────────────────────────
 
@@ -165,7 +166,7 @@ const withImagesCode = `// Steps with inline images using ThinkingStepImage.
     <ThinkingStep index={1} icon="image"
       label="Found screenshot"
       status={getStatus(1)} isLast={visibleSteps <= 2}>
-      <ThinkingStepImage src="/og.png" caption="Homepage screenshot" />
+      <ThinkingStepImage src={withBasePath("/og.png")} caption="Homepage screenshot" />
     </ThinkingStep>
     <ThinkingStep index={2} icon="brain"
       label="Analyzing layout"
@@ -192,7 +193,7 @@ const fullCode = `// Kitchen sink: sources, details, descriptions, images, custo
     <ThinkingStep index={1} icon="image" label="Found profile photo"
       description="elderatlantean profile from x.com"
       status={getStatus(1)} isLast={visibleSteps <= 2}>
-      <ThinkingStepImage src="/og.png" caption="Profile card" />
+      <ThinkingStepImage src={withBasePath("/og.png")} caption="Profile card" />
     </ThinkingStep>
     <ThinkingStep index={2} icon="globe" label="Reading portfolio"
       status={getStatus(2)} isLast={visibleSteps <= 3}>
@@ -519,7 +520,7 @@ function WithImagesDemo({ playing, onFinished, onResetRef }: DemoProps) {
           isLast={visibleSteps <= 2}
         >
           {fired > 2 && (
-            <ThinkingStepImage src="/og.png" caption="Homepage screenshot" />
+            <ThinkingStepImage src={withBasePath("/og.png")} caption="Homepage screenshot" />
           )}
         </ThinkingStep>
         <ThinkingStep
@@ -591,7 +592,7 @@ function FullDemo({ playing, onFinished, onResetRef }: DemoProps) {
           isLast={visibleSteps <= 2}
         >
           {fired > 2 && (
-            <ThinkingStepImage src="/og.png" caption="Profile card" />
+            <ThinkingStepImage src={withBasePath("/og.png")} caption="Profile card" />
           )}
         </ThinkingStep>
         <ThinkingStep

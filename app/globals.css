@@ -3,12 +3,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/InterVariable.ttf") format("truetype");
-  font-weight: 100 900;
-  font-display: swap;
-}
+/* Inter variable font is loaded via next/font/local in app/layout.tsx
+   (exposes the --font-inter CSS variable). next/font handles the asset
+   URL so it stays correct under the GitHub Pages base path. */
 
 :root {
   /* ── Surfaces (8-level ladder) ──
@@ -262,7 +259,7 @@
 }
 
 @theme inline {
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
